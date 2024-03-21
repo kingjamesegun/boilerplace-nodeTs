@@ -1,5 +1,7 @@
 import { config } from "../config/db.config";
-import { Sequelize } from "sequelize";
+import { Sequelize, DataTypes, Model } from "sequelize";
+import { UserModel } from "./user.model";
+import { RoleModel } from "./role.model";
 
 const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
 	host: config.HOST,
@@ -12,23 +14,26 @@ const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
 	},
 });
 
+interface Db {
+	Sequelize: any; // Adjust the type as per your Sequelize setup
+	sequelize: any; // Adjust the type as per your Sequelize setup
+	user: any;
+	role: any;
+	ROLES: string[];
+}
+
 const db = {
-	sequelize: sequelize,
-	Sequelize: Sequelize,
-	user: require("./user.model")(sequelize, Sequelize),
-	role: require("./role.model")(sequelize, Sequelize),
+	Sequelize,
+	sequelize,
+	user: UserModel(sequelize),
+	role: RoleModel(sequelize),
 	ROLES: ["user", "admin", "moderator"],
 };
 
-db.role.belongsToMany(db.user, {
-	through: "user_roles",
-	foreignKey: "roleId",
-	otherKey: "userId",
-});
-db.user.belongsToMany(db.role, {
-	through: "user_roles",
-	foreignKey: "userId",
-	otherKey: "roleId",
-});
+const Role = db.role;
+const User = db.user;
+
+Role.belongsToMany(User, { through: "user_roles" });
+User.belongsToMany(Role, { through: "user_roles" });
 
 export default db;
