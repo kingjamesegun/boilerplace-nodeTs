@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.moderatorContent = exports.adminContent = exports.userContent = exports.allAcess = void 0;
-const allAcess = (req, res) => {
+exports.moderatorContent = exports.adminContent = exports.userContent = exports.allAccess = void 0;
+const allAccess = (req, res) => {
     res.status(200).send("Public Content.");
 };
-exports.allAcess = allAcess;
+exports.allAccess = allAccess;
 const userContent = (req, res) => {
     res.send(200).send("User content");
 };

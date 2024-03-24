@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction, Application } from "express";
 import middleware from "../middleware";
 import controller from "../controllers/auth.controllers";
 
 const verifySignUp = middleware.verifySignUp;
 
-export default (app) => {
+export default (app: Application) => {
 	app.use((req: Request, res: Response, next: NextFunction) => {
 		res.header(
 			"Access-Control-Allow-Headers",

@@ -21,9 +21,6 @@ model_1.default.sequelize
 app.get("/", (req, res) => {
     res.send("Hello World!, New");
 });
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
 function initial() {
     Role.create({
         id: 1,
@@ -38,3 +35,9 @@ function initial() {
         name: "admin",
     });
 }
+// routes
+app.use("/api/auth", require("./routes/auth.routes"));
+app.use("/api/user", require("./routes/user.routes"));
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});

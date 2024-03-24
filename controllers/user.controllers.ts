@@ -1,6 +1,6 @@
 import { Response, Request } from "express";
 
-export const allAcess = (req: Request, res: Response) => {
+export const allAccess = (req: Request, res: Response) => {
 	res.status(200).send("Public Content.");
 };
 
