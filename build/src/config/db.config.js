@@ -4,7 +4,7 @@ exports.config = void 0;
 exports.config = {
     HOST: "localhost",
     USER: "postgres",
-    PASSWORD: "123",
+    PASSWORD: "1234",
     DB: "testdb",
     dialect: "postgres",
     pool: {

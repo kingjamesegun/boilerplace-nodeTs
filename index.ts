@@ -9,10 +9,13 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 const Role = db.role;
 
-db.sequelize.sync({ force: true }).then(() => {
-	console.log("Drop and Resync Db");
-	initial();
-});
+db.sequelize
+	.sync({ force: true })
+	.then(() => {
+		console.log("Drop and Resync Db");
+		initial();
+	})
+	.catch((err) => console.log({ err }));
 
 app.get("/", (req, res) => {
 	res.send("Hello World!, New");

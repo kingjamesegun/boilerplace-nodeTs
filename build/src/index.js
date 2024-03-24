@@ -11,10 +11,13 @@ const port = 5000;
 app.use((0, cors_1.default)());
 app.use(express_1.default.urlencoded({ extended: true }));
 const Role = model_1.default.role;
-model_1.default.sequelize.sync({ force: true }).then(() => {
+model_1.default.sequelize
+    .sync({ force: true })
+    .then(() => {
     console.log("Drop and Resync Db");
     initial();
-});
+})
+    .catch((err) => console.log({ err }));
 app.get("/", (req, res) => {
     res.send("Hello World!, New");
 });

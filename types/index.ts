@@ -1,3 +1,5 @@
+import { Request } from "express";
+
 export type Dialect = "postgres" | "mysql" | "sqlite" | "mssql"; // Add more dialects if needed
 
 export type DatabaseConfig = {
@@ -13,3 +15,7 @@ export type DatabaseConfig = {
 		idle: number;
 	};
 };
+
+export interface AuthenticatedRequest extends Request {
+	userId?: string;
+}
