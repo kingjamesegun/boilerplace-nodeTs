@@ -1,4 +1,10 @@
-import { Application, NextFunction, Request, Response } from "express";
+import express, {
+	Application,
+	NextFunction,
+	Request,
+	Response,
+	Router,
+} from "express";
 import {
 	allAccess,
 	moderatorContent,
@@ -6,22 +12,23 @@ import {
 	adminContent,
 } from "../controllers/user.controllers";
 import authJwt from "../middleware/authjwt";
+const router: Router = express.Router();
 
-export const userRoutes = (app: Application) => {
-	app.use((req: Request, res: Response, next: NextFunction) => {
-		res.header(
-			"Access-Control-Allow-Headers",
-			"x-access-token, Origin, Content-Type, Accept"
-		);
-		next();
-	});
-
-	app.get("/api/all", allAccess);
-	app.get("/api/user", [authJwt.verifyToken], userContent);
-	app.get(
-		"/api/mod",
-		[authJwt.verifyToken, authJwt.isModerator],
-		moderatorContent
+router.use((req: Request, res: Response, next: NextFunction) => {
+	res.header(
+		"Access-Control-Allow-Headers",
+		"x-access-token, Origin, Content-Type, Accept"
 	);
-	app.get("/api/admin", [authJwt.verifyToken, authJwt.isAdmin], adminContent);
-};
+	next();
+});
+
+router.get("/all", allAccess);
+router.get("/user", [authJwt.verifyToken], userContent);
+router.get(
+	"/api/mod",
+	[authJwt.verifyToken, authJwt.isModerator],
+	moderatorContent
+);
+router.get("/api/admin", [authJwt.verifyToken, authJwt.isAdmin], adminContent);
+
+export default router;

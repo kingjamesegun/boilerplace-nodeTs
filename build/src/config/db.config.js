@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.config = void 0;
 exports.config = {
-    HOST: "localhost",
+    HOST: "127.0.0.1",
     USER: "postgres",
     PASSWORD: "1234",
     DB: "testdb",

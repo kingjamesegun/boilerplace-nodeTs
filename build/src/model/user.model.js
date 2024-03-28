@@ -9,7 +9,7 @@ const UserModel = (sequelize) => {
             primaryKey: true,
             autoIncrement: true,
         },
-        name: {
+        username: {
             type: sequelize_1.DataTypes.STRING,
         },
         email: {
@@ -17,10 +17,8 @@ const UserModel = (sequelize) => {
         },
         password: {
             type: sequelize_1.DataTypes.STRING,
+            allowNull: false,
         },
-    }, {
-        tableName: "users",
-        hooks: { beforeCreate: () => { } },
     });
     return User;
 };

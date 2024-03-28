@@ -12,44 +12,27 @@ interface Db {
 	ROLES: string[];
 }
 
-export const signup = async (req: Request, res: Response) => {
+export const signUp = async (req: Request, res: Response) => {
 	try {
-		const { username, email, password, roles } = req.body;
+		const { username, email, password } = req.body;
 
-		const hashedPassword = bcrypt.hashSync(password, 8);
+		const hashedPassword = await bcrypt.hashSync(password, 8);
 
-		const user = await db.sequelize.transaction(async (t) => {
-			const user = await db.user.create(
-				{ username, email, password: hashedPassword },
-				{ transaction: t }
-			);
-
-			if (roles) {
-				const roleInstances = await db.role.findAll({
-					where: {
-						name: {
-							[Op.or]: roles,
-						},
-					},
-					transaction: t,
-				});
-				await user.setRoles(roleInstances, { transaction: t });
-			} else {
-				await user.setRoles([db.ROLES[0]], { transaction: t });
-			}
-
-			return user;
+		const user = await db.user.create({
+			username,
+			email,
+			password: hashedPassword,
 		});
 
-		res.status(200).send({ message: "User was registered successfully!" });
+		res.status(201).send({ message: "User was registered successfully!" });
 	} catch (err) {
-		res.status(500).send({ message: err.message });
+		res.status(500).send({ message: err });
 	}
 };
 
 const signIn = async (req: Request, res: Response) => {
 	try {
-		const user = await User.findOne({
+		const user = await db.user.findOne({
 			where: {
 				username: req.body.username,
 			},
@@ -79,7 +62,7 @@ const signIn = async (req: Request, res: Response) => {
 
 		const authorities: string[] = [];
 		const roles = await user.getRoles();
-		roles.forEach((role) => {
+		roles.forEach((role: any) => {
 			authorities.push("ROLE_" + role.name.toUpperCase());
 		});
 
@@ -91,7 +74,7 @@ const signIn = async (req: Request, res: Response) => {
 			accessToken: token,
 		});
 	} catch (err) {
-		res.status(500).send({ message: err.message });
+		res.status(500).send({ message: err });
 	}
 };
 

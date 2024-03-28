@@ -22,7 +22,7 @@ interface Db {
 	ROLES: string[];
 }
 
-const db = {
+const db: Db = {
 	Sequelize,
 	sequelize,
 	user: UserModel(sequelize),
